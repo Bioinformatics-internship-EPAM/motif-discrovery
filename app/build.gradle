@@ -26,5 +26,5 @@ dependencies {
 
 application {
     // Define the main class for the application.
-    mainClass = 'motif.discrovery.App'
+    mainClass = 'Main'
 }
