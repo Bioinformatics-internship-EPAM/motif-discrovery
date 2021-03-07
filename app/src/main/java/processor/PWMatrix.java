@@ -9,14 +9,14 @@ public class PWMatrix {
         this.data = data;
     }
 
-    public double[] getRow(char n) {
-        switch (n) {
-            case 'A' : return data[0];
-            case 'C' : return data[1];
-            case 'T' : return data[2];
-            case 'G' : return data[3];
-            default: throw new IncorrectNucleotideException(n);
-        }
+    public double[] getRow(char n) throws IncorrectNucleotideException{
+        return switch (n) {
+            case 'A' -> data[0];
+            case 'C' -> data[1];
+            case 'T' -> data[2];
+            case 'G' -> data[3];
+            default -> throw new IncorrectNucleotideException(n);
+        };
     }
 }
 

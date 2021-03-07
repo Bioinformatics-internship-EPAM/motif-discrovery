@@ -1,8 +1,6 @@
 package processor;
 
-import java.util.ArrayList;
 import java.util.Map;
-import java.util.Set;
 
 /**
  * SimilarityScoreCalculator provides method to calculate similarity score
