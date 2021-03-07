@@ -50,11 +50,10 @@ public class SimilarityScoreCalculator {
 
     private double calculateScoreForWindow(String window, PWMatrix pwm) {
         double sum = 0;
-        int i = 0;
 
-        for (char ch : window.toCharArray()) {
+        for (int i = 0; i < window.length(); i++) {
+            char ch = window.charAt(i);
             sum += pwm.getRow(ch)[i];
-            i++;
         }
 
         return sum;
