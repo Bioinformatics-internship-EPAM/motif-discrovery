@@ -39,6 +39,7 @@ public class FastaFile {
     /**
      * readFastaFile read stream of lines from file with given name using java.nio.Files and delegates parsing
      * to parseFastaLine function. Return fastaRecords field
+     *
      * @param filePath is a path to fasta file
      * @return List of string
      * @throws IOException
@@ -52,26 +53,31 @@ public class FastaFile {
 
     /**
      * Getter for fastaRecords field
+     *
      * @return fastaRecords
      */
     public List<FastaRecord> getFastaRecords() {
         return fastaRecords;
     }
 
-    /** parseFastaLine loop throw stream of lines. It creates 2 StringBuilder instances for fasta file header id and chains
+    /**
+     * parseFastaLine loop throw stream of lines. It creates 2 StringBuilder instances for fasta file header id and chains
      * If line contains IDENTIFIER, function fills id StringBuilder, else it fill chain StringBuilder
      * If line contains IDENTIFIER and chain StringBuilder is not empty, then function calls fillFastaRecord
+     *
      * @param lines
      */
     private void parseFastaLine(Stream<String> lines) {
         this.fastaRecords = new ArrayList<>();
         lines.forEach(s -> {
-               if (s.startsWith(IDENTIFIER)) {
-                   fillFastaHeader(s.substring(s.indexOf(IDENTIFIER) + 1));
-                } else {
-                    fillFastaRecordChain(s);
+                    if (s.startsWith(IDENTIFIER)) {
+                        fillFastaHeader(s.substring(s.indexOf(IDENTIFIER) + 1));
+                        return;
+                    }
+                    if (!s.isEmpty()) {
+                        fillFastaRecordChain(s);
+                    }
                 }
-            }
         );
     }
 
@@ -79,6 +85,7 @@ public class FastaFile {
      * fillFastaHeader get fasta record id
      * It creates new instance of FastaRecord and fill its id and comments field with given values
      * New FastaRecord is appended to fastaRecords list
+     *
      * @param id
      */
     private void fillFastaHeader(String id) {
@@ -93,9 +100,10 @@ public class FastaFile {
     /**
      * fillFastaRecordChain fills last added fasta record chain
      * If fasta record has already had set chain, it concat with new given chain value
+     *
      * @param s
      */
-    private void fillFastaRecordChain (String s) {
+    private void fillFastaRecordChain(String s) {
         FastaRecord fastaRecord = this.fastaRecords.remove(this.fastaRecords.size() - 1);
         String chain = fastaRecord.getChain();
         StringBuilder sb = new StringBuilder();

@@ -29,6 +29,5 @@ public class FastaFileTest {
         Assert.assertEquals("crp", fastaRecord.getId());
         Assert.assertEquals("63 423", fastaRecord.getComments());
         Assert.assertEquals("CACAAAGCGAAAGCTATGCTAAAACAGTCAGGATGCTACAGTAATACATTGATGTACTGCATGTATGCAAAGGACGTCAC", fastaRecord.getChain());
-
     }
 }
