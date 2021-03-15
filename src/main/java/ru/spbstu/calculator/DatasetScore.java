@@ -3,6 +3,9 @@ package ru.spbstu.calculator;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ Store scores of all possible motifs in fasta file
+ */
 public class DatasetScore {
 
     private List<Motif> data = new ArrayList<>();
