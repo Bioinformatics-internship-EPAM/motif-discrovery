@@ -1,4 +1,4 @@
-package processor;
+package ru.spbstu.calculator;
 
 public class IncorrectNucleotideException extends IllegalArgumentException {
     public IncorrectNucleotideException(char incorrectArg) {

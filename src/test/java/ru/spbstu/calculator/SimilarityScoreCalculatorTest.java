@@ -1,10 +1,12 @@
+package ru.spbstu.calculator;
+
 import org.junit.Test;
 import static org.junit.Assert.*;
 
-import processor.DatasetScore;
-import processor.FastaDataset;
-import processor.PWMatrix;
-import processor.SimilarityScoreCalculator;
+import ru.spbstu.calculator.DatasetScore;
+import ru.spbstu.calculator.FastaDataset;
+import ru.spbstu.calculator.PWMatrix;
+import ru.spbstu.calculator.SimilarityScoreCalculator;
 
 import java.util.HashMap;
 import java.util.Map;

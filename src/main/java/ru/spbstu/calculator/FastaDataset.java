@@ -1,4 +1,4 @@
-package processor;
+package ru.spbstu.calculator;
 
 import java.util.HashMap;
 import java.util.Map;
