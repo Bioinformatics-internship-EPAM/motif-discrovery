@@ -1,20 +1,25 @@
 package ru.spbstu.calculator;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
 
 public class DatasetScore {
 
-    private Map<String, double[]> data = new HashMap<>();
+    private List<Motif> data = new ArrayList<>();
 
-    public DatasetScore() {}
+    public DatasetScore() {
+    }
 
-    public void add(String id, double[] scores) {
-        data.put(id, scores);
+    public void add(Motif motif) {
+        data.add(motif);
+    }
+
+    public void addAll(List<Motif> motifs) {
+        data.addAll(motifs);
     }
 
     //for testing
-    public double[] getByID(String id) {
-        return data.get(id);
+    public List<Motif> getData() {
+        return data;
     }
 }

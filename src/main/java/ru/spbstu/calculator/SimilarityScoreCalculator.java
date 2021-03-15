@@ -1,19 +1,23 @@
 package ru.spbstu.calculator;
 
-import java.util.Map;
+import ru.spbstu.fastafile.FastaFile;
+import ru.spbstu.fastafile.FastaRecord;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
- * SimilarityScoreCalculator provides method to calculate similarity score
+ * SimilarityScoreCalculator provides method to calculate similarity score for all records in fasta file
  */
 public class SimilarityScoreCalculator {
 
     private final int windowSize;
-    private final FastaDataset dataset;
+    private final FastaFile dataset;
 
     /**
      * Must be constructed one time before loop of finding the best motif
      */
-    public SimilarityScoreCalculator(int windowSize, FastaDataset dataset) {
+    public SimilarityScoreCalculator(int windowSize, FastaFile dataset) {
         this.windowSize = windowSize;
         this.dataset = dataset;
     }
@@ -25,34 +29,40 @@ public class SimilarityScoreCalculator {
      * first sequence = "ACCTT"
      * second = "CTGC"
      *
-     * result : [[score(^ACCT^T), score(A^CCTT^)],
+     * output : [[score(^ACCT^T), score(A^CCTT^)],
      *           [score(^CTGC^)]]
      */
     public DatasetScore calculateScore(PWMatrix pwm) {
-        DatasetScore result = new DatasetScore();
+        DatasetScore datasetScore = new DatasetScore();
 
-        for (Map.Entry<String, String> entry : dataset.data().entrySet()) {
-            result.add(entry.getKey(), calculateScoreForSequence(entry.getValue(), pwm));
+        for (FastaRecord record: dataset.getFastaRecords()) {
+            datasetScore.addAll(calculateScoreForRecord(record, pwm));
+        }
+
+        return datasetScore;
+    }
+
+    private List<Motif> calculateScoreForRecord(FastaRecord record, PWMatrix pwm) {
+        List<Motif> result = new ArrayList<>();
+
+        int last = record.getChain().length() - windowSize;
+        for (int i = 0; i <= last; i++) {
+            result.add(new Motif(
+                    record.getId(),
+                    i,
+                    windowSize,
+                    calculateScoreForWindow(record.getChain(), i, pwm)
+            ));
         }
 
         return result;
     }
 
-    private double[] calculateScoreForSequence(String sequence, PWMatrix pwm) {
-        double[] result = new double[sequence.length() - windowSize + 1];
-
-        for (int i = 0; i <= sequence.length() - windowSize; i++) {
-            result[i] = calculateScoreForWindow(sequence.substring(i, i + windowSize), pwm);
-        }
-
-        return result;
-    }
-
-    private double calculateScoreForWindow(String window, PWMatrix pwm) {
+    private double calculateScoreForWindow(String sequence, int position, PWMatrix pwm) {
         double sum = 0;
 
-        for (int i = 0; i < window.length(); i++) {
-            char ch = window.charAt(i);
+        for (int i = 0; i < windowSize; i++) {
+            char ch = sequence.charAt(i + position);
             sum += pwm.getRow(ch)[i];
         }
 

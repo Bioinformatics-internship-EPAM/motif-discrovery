@@ -1,42 +1,56 @@
 package ru.spbstu.calculator;
 
+import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
-import ru.spbstu.calculator.DatasetScore;
-import ru.spbstu.calculator.FastaDataset;
-import ru.spbstu.calculator.PWMatrix;
-import ru.spbstu.calculator.SimilarityScoreCalculator;
+import ru.spbstu.fastafile.FastaFile;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.io.IOException;
 
 public class SimilarityScoreCalculatorTest {
-    @Test public void testCountScore() {
-        FastaDataset fastaDataset = new FastaDataset();
-        fastaDataset.add("id1", "AAAAA");
-        fastaDataset.add("id2", "ACTG");
-        fastaDataset.add("id3", "ACC");
+
+    private FastaFile fastaFile;
+    private final double delta = 0.0001;
+
+    @Before
+    public void setup() throws IOException {
+        fastaFile = new FastaFile();
+        final String fileName = "src/test/resources/calculator-test";
+        fastaFile.readFastaFile(fileName);
+    }
+
+    @Test
+    public void testCountScore() {
 
         double m[][] = {
-                { 0.1D, 0.1D, 0.1D, 0.1D },
-                { 0.2D, 0.2D, 0.2D, 0.2D },
-                { 0.3D, 0.3D, 0.3D, 0.3D },
-                { 0.4D, 0.4D, 0.4D, 0.4D },
+                {0.1D, 0.1D, 0.1D, 0.1D},
+                {0.2D, 0.2D, 0.2D, 0.2D},
+                {0.3D, 0.3D, 0.3D, 0.3D},
+                {0.4D, 0.4D, 0.4D, 0.4D},
         };
         PWMatrix pwm = new PWMatrix(m);
 
-        SimilarityScoreCalculator ssc = new SimilarityScoreCalculator(4, fastaDataset);
+        int windowSize = 4;
+        SimilarityScoreCalculator ssc = new SimilarityScoreCalculator(windowSize, fastaFile);
 
         DatasetScore ds = ssc.calculateScore(pwm);
 
-        Map<String, double[]> resultMap = new HashMap<>();
-        resultMap.put("id1", new double[]{ 0.4D, 0.4D });
-        resultMap.put("id2", new double[]{ 1.0D });
-        resultMap.put("id3", new double[]{});
+        assertEquals(3, ds.getData().size());
 
-        assertArrayEquals(resultMap.get("id1"), ds.getByID("id1"), 0.0001);
-        assertArrayEquals(resultMap.get("id2"), ds.getByID("id2"), 0.0001);
-        assertArrayEquals(resultMap.get("id3"), ds.getByID("id3"), 0.0001);
+        assertEquals("id1", ds.getData().get(0).getRecordID());
+        assertEquals(0, ds.getData().get(0).getPosition());
+        assertEquals(windowSize, ds.getData().get(0).getLength());
+        assertEquals(1.0D, ds.getData().get(0).getScore(), delta);
+
+        assertEquals("id1", ds.getData().get(1).getRecordID());
+        assertEquals(1, ds.getData().get(1).getPosition());
+        assertEquals(windowSize, ds.getData().get(1).getLength());
+        assertEquals(1.0D, ds.getData().get(1).getScore(), delta);
+
+        assertEquals("id2", ds.getData().get(2).getRecordID());
+        assertEquals(0, ds.getData().get(2).getPosition());
+        assertEquals(windowSize, ds.getData().get(2).getLength());
+        assertEquals(0.4D, ds.getData().get(2).getScore(), delta);
     }
 }
