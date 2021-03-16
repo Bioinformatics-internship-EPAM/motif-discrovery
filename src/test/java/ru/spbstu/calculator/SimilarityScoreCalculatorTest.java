@@ -37,20 +37,18 @@ public class SimilarityScoreCalculatorTest {
         DatasetScore ds = ssc.calculateScore(pwm);
 
         assertEquals(3, ds.getData().size());
+        assertEquals(windowSize, ds.getWindowSize());
 
         assertEquals("id1", ds.getData().get(0).getRecordID());
         assertEquals(0, ds.getData().get(0).getPosition());
-        assertEquals(windowSize, ds.getData().get(0).getLength());
         assertEquals(1.0D, ds.getData().get(0).getScore(), delta);
 
         assertEquals("id1", ds.getData().get(1).getRecordID());
         assertEquals(1, ds.getData().get(1).getPosition());
-        assertEquals(windowSize, ds.getData().get(1).getLength());
         assertEquals(1.0D, ds.getData().get(1).getScore(), delta);
 
         assertEquals("id2", ds.getData().get(2).getRecordID());
         assertEquals(0, ds.getData().get(2).getPosition());
-        assertEquals(windowSize, ds.getData().get(2).getLength());
         assertEquals(0.4D, ds.getData().get(2).getScore(), delta);
     }
 }

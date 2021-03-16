@@ -9,19 +9,20 @@ import java.util.List;
 public class DatasetScore {
 
     private List<Motif> data = new ArrayList<>();
+    private final int windowSize;
 
-    public DatasetScore() {
-    }
-
-    public void add(Motif motif) {
-        data.add(motif);
+    public DatasetScore(int windowSize) {
+        this.windowSize = windowSize;
     }
 
     public void addAll(List<Motif> motifs) {
         data.addAll(motifs);
     }
 
-    //for testing
+    public int getWindowSize(){
+        return windowSize;
+    }
+
     public List<Motif> getData() {
         return data;
     }
