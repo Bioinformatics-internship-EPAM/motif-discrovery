@@ -1,11 +1,23 @@
 package ru.spbstu;
 
+import ru.spbstu.reporter.MotifReporter;
+
+import java.util.ArrayList;
+import java.util.List;
+
 public class Main {
-    public String getGreeting() {
+    public String getPrintList() {
         return "Hello, motif discovery";
     }
 
     public static void main(String[] args) {
-        System.out.println(new Main().getGreeting());
+        List<String> motifs = new ArrayList<>();
+        motifs.add("CAAA");
+        motifs.add("DBBB");
+        motifs.add("ACCC");
+        motifs.add("BDDD");
+        motifs.add("FDDD");
+        motifs.add("ESDDD");
+        MotifReporter.reportTopFive(motifs);
     }
 }
