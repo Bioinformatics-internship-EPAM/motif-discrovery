@@ -10,6 +10,14 @@ public class PWRow {
         this.pwrow = new double[size];
     }
 
+    public double getByIndex(int index) {
+        return pwrow[index];
+    }
+
+    public double[] getRow() {
+        return pwrow;
+    }
+
     protected void increaseByOne(int index) {
         pwrow[index] += 1;
     }
@@ -22,15 +30,5 @@ public class PWRow {
         pwrow[index] = Math.log(pwrow[index] / frequency);
     }
 
-    public double getByIndex(int index) {
-        return pwrow[index];
-    }
 
-    public void setByIndex(int index, double number) {
-        pwrow[index] = number;
-    }
-
-    public double[] getRow() {
-        return pwrow;
-    }
 }
