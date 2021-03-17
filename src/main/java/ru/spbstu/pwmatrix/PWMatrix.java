@@ -12,19 +12,20 @@ import java.util.Map;
  */
 
 public class PWMatrix {
-    private final Map<String, PWRow> pwmatrix;
+    private final Map<Character, PWRow> pwmatrix;
     private final int rowLength;
+    private int numberOfSequences;
 
     public PWMatrix(int size) {
         this.pwmatrix = new HashMap<>();
         this.rowLength = size;
-        this.pwmatrix.put("A", new PWRow(size));
-        this.pwmatrix.put("C", new PWRow(size));
-        this.pwmatrix.put("G", new PWRow(size));
-        this.pwmatrix.put("T", new PWRow(size));
+        this.numberOfSequences = 0;
+        for (char nucle: Constants.NUCLEOTIDES) {
+            this.pwmatrix.put(nucle, new PWRow(size));
+        }
     }
 
-    public Map<String, PWRow> getMatrix() {
+    public Map<Character, PWRow> getMatrix() {
         return this.pwmatrix;
     }
 
@@ -35,10 +36,9 @@ public class PWMatrix {
      * @param record
      */
     public void calculateAbsoluteFrequencies(FastaRecord record) {
-        char[] sequence = new char[rowLength];
         for (int start = 0; start + rowLength <= record.getChain().length(); start += rowLength) {
-            record.getChain().getChars(start, start + rowLength, sequence, 0);
-            analyseSequence(sequence);
+            numberOfSequences++;
+            analyseSequence(record.getChain().substring(start, start + rowLength));
         }
     }
 
@@ -47,21 +47,19 @@ public class PWMatrix {
      *
      * @param sequence
      */
-    private void analyseSequence(char[] sequence) {
+    private void analyseSequence(String sequence) {
         int index = 0;
-        for (char nucleotide: sequence) {
-            pwmatrix.get(Character.toString(nucleotide)).increaseByOne(index);
+        for (char nucleotide: sequence.toCharArray()) {
+            pwmatrix.get(nucleotide).increaseByOne(index);
             index++;
         }
     }
 
     /**
      * Calculates frequency for every nucleotide position /relatively
-     *
-     * @param numberOfSequences
      */
-    public void calculateRelativeFrequencies(int numberOfSequences) {
-        for (String nucle: Constants.NUCLEOTIDES) {
+    public void calculateRelativeFrequencies() {
+        for (char nucle: Constants.NUCLEOTIDES) {
             for (int idx = 0; idx < rowLength; idx++) {
                 pwmatrix.get(nucle).divideByNumber(idx, numberOfSequences);
             }
@@ -75,7 +73,7 @@ public class PWMatrix {
      * @param freqOfNucleotides
      */
     public void calculateLogLikelihood(double freqOfNucleotides) {
-        for (String nucle: Constants.NUCLEOTIDES) {
+        for (char nucle: Constants.NUCLEOTIDES) {
             for (int idx = 0; idx < rowLength; idx++) {
                pwmatrix.get(nucle).calculateLogFreq(idx, freqOfNucleotides);
             }

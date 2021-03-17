@@ -1,5 +1,5 @@
 package ru.spbstu.pwmatrix;
 
 public class Constants {
-    public static final String[] NUCLEOTIDES = {"A", "C", "G", "T"};
+    public static final Character[] NUCLEOTIDES = {'A', 'C', 'G', 'T'};
 }

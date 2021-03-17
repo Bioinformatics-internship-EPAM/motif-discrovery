@@ -14,7 +14,7 @@ public class PWRow {
         pwrow[index] += 1;
     }
 
-    protected void divideByNumber(int index, int number) {
+    protected void divideByNumber(int index, int number) throws ArithmeticException {
         pwrow[index] /= number;
     }
 
