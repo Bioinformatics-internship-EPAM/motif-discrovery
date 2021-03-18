@@ -22,16 +22,19 @@ public class PWCalculatorTest {
     public void testPositionWeightMatrix() {
         int sequenceLength = 9;
         double frequencyOfNucleotides = 0.25;
+
         PWCalculator pwcalculator = new PWCalculator(fastaFile, sequenceLength);
-        PWData data = pwcalculator.calculateMatrix(frequencyOfNucleotides);
+        PWMatrix matrix = pwcalculator.calculateMatrix(frequencyOfNucleotides);
 
-        assertEquals(1, data.getListMatrix().size());
 
-        PWMatrix matrix = data.getMatrixByIndex(0);
+        assertEquals(sequenceLength, matrix.getRowByNucleotide('A').getRow().length);
+        assertEquals(sequenceLength, matrix.getRowByNucleotide('C').getRow().length);
+        assertEquals(sequenceLength, matrix.getRowByNucleotide('G').getRow().length);
+        assertEquals(sequenceLength, matrix.getRowByNucleotide('T').getRow().length);
 
-        assertEquals(0.1823215567939546, matrix.getRowByNucleotide('A').getByIndex(0), delta);
-        assertEquals(-0.2231435513142097, matrix.getRowByNucleotide('C').getByIndex(1), delta);
-        assertEquals(1.0296194171811581, matrix.getRowByNucleotide('G').getByIndex(2), delta);
-        assertEquals(0.8754687373538999, matrix.getRowByNucleotide('T').getByIndex(8), delta);
+        assertEquals(0.1823215567939546D, matrix.getRowByNucleotide('A').getByIndex(0), delta);
+        assertEquals(-0.2231435513142097D, matrix.getRowByNucleotide('C').getByIndex(1), delta);
+        assertEquals(1.0296194171811581D, matrix.getRowByNucleotide('G').getByIndex(2), delta);
+        assertEquals(Double.NEGATIVE_INFINITY, matrix.getRowByNucleotide('T').getByIndex(3), delta);
     }
 }

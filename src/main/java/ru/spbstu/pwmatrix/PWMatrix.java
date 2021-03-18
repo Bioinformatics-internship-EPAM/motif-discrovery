@@ -1,5 +1,6 @@
 package ru.spbstu.pwmatrix;
 
+import ru.spbstu.fastafile.FastaFile;
 import ru.spbstu.fastafile.FastaRecord;
 
 import java.util.HashMap;
@@ -12,46 +13,58 @@ import java.util.Map;
  */
 
 public class PWMatrix {
+
     private final Map<Character, PWRow> pwmatrix;
     private final int sequenceLength;
     private int numberOfSequences;
+    private int startPosition;
 
     public PWMatrix(int sequenceLength) {
         this.pwmatrix = new HashMap<>();
-        this.sequenceLength = sequenceLength;
-        this.numberOfSequences = 0;
         for (char nucle: Constants.NUCLEOTIDES) {
             this.pwmatrix.put(nucle, new PWRow(sequenceLength));
         }
+
+        this.sequenceLength = sequenceLength;
+        this.numberOfSequences = 0;
+        this.startPosition = 0;
+
     }
 
     public PWRow getRowByNucleotide(char nucleotide) {
         return pwmatrix.get(nucleotide);
     }
 
-    protected void calculateMatrix(FastaRecord record, double frequencyOfNucleotides) {
-        calculateAbsoluteFrequencies(record);
+    /**
+     * Calculating log-likelihood position weight matrix
+     *
+     * @param fastaFile - fastafile with necessary records
+     * @param frequencyOfNucleotides - general frequency of nucleotides in fastafile
+     */
+
+    protected void calculateMatrix(FastaFile fastaFile, double frequencyOfNucleotides) {
+        calculateAbsoluteFrequencies(fastaFile);
         calculateRelativeFrequencies();
         calculateLogLikelihood(frequencyOfNucleotides);
     }
 
     /**
      * Fills matrix with count of nucleotides on every position
-     * in sequences with length == rowLength
+     * in sequences with length == sequenceLength
      *
-     * @param record
+     * @param fastaFile - fastafile
      */
-    private void calculateAbsoluteFrequencies(FastaRecord record) {
-        for (int start = 0; start + sequenceLength <= record.getChain().length(); start += sequenceLength) {
+    private void calculateAbsoluteFrequencies(FastaFile fastaFile) {
+        for (FastaRecord record: fastaFile.getFastaRecords()) {
+            analyseSequence(record.getChain().substring(startPosition, startPosition + sequenceLength));
             numberOfSequences++;
-            analyseSequence(record.getChain().substring(start, start + sequenceLength));
         }
     }
 
     /**
      * Counting nucleotides in one sequence
      *
-     * @param sequence
+     * @param sequence motif from record
      */
     private void analyseSequence(String sequence) {
         int index = 0;
@@ -76,7 +89,7 @@ public class PWMatrix {
      * Calculates logarithm e for every relative frequency divided by total
      * nucleotides frequency in motif
      *
-     * @param freqOfNucleotides
+     * @param freqOfNucleotides - general frequency of nucleotides in fastafile
      */
     private void calculateLogLikelihood(double freqOfNucleotides) {
         for (char nucle: Constants.NUCLEOTIDES) {

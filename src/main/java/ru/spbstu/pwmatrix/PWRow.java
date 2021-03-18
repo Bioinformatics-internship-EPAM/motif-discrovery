@@ -4,7 +4,8 @@ package ru.spbstu.pwmatrix;
  * PWRow represents data of frequency for one nucleotide at every position
  */
 public class PWRow {
-    private double[] pwrow;
+
+    private final double[] pwrow;
 
     PWRow(int size) {
         this.pwrow = new double[size];

@@ -1,31 +1,29 @@
 package ru.spbstu.pwmatrix;
 
 import ru.spbstu.fastafile.FastaFile;
-import ru.spbstu.fastafile.FastaRecord;
+
+/**
+ * PWCalculator contains position weight matrix and method for calculating it
+ */
 
 public class PWCalculator {
 
+    /**
+     * Fastafile - fasta dataset
+     * PWMatrix - position weight matrix
+     */
+
     private final FastaFile fastaFile;
-    private final int sequenceLength;
-    private PWData pwdata;
+    private PWMatrix data;
 
 
     public PWCalculator(FastaFile fastaFile, int sequenceLength) {
         this.fastaFile = fastaFile;
-        this.sequenceLength = sequenceLength;
-        this.pwdata = new PWData();
+        this.data = new PWMatrix(sequenceLength);
     }
 
-    public PWData calculateMatrix(double frequencyOfNucleotides) {
-        for (FastaRecord record: fastaFile.getFastaRecords()) {
-            pwdata.addNewMatrix(calculateOneMatrix(record, frequencyOfNucleotides));
-        }
-        return pwdata;
-    }
-
-    private PWMatrix calculateOneMatrix(FastaRecord record, double frequencyOfNucleotides) {
-        PWMatrix matrix = new PWMatrix(sequenceLength);
-        matrix.calculateMatrix(record, frequencyOfNucleotides);
-        return matrix;
+    public PWMatrix calculateMatrix(double frequencyOfNucleotides) {
+        data.calculateMatrix(fastaFile, frequencyOfNucleotides);
+        return data;
     }
 }
