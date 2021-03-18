@@ -3,8 +3,8 @@ package ru.spbstu.calculator;
 /**
  Represent one Motif in FastaFile
  */
-public class Motif {
-
+public class Motif implements Comparable<Motif>{
+    private static final int EPS_SCORE_COMPARE = 100;
     private final String recordID;
     // Position of the first symbol in parent record
     private final int position;
@@ -29,5 +29,10 @@ public class Motif {
 
     public double getScore() {
         return score;
+    }
+
+    @Override
+    public int compareTo(Motif o) {
+        return (int) (this.score - o.score) * EPS_SCORE_COMPARE;
     }
 }

@@ -1,10 +1,9 @@
 package ru.spbstu.reporter;
 
-import java.io.Writer;
-import java.util.List;
+import ru.spbstu.calculator.DatasetScore;
 
 public class MotifReporter {
-    public static void reportTopFive(List<String> results) {
-        results.stream().sorted().limit(5).forEach(System.out::println);
+    public static void reportTopFive(DatasetScore result) {
+        result.getData().stream().sorted().limit(5).forEach(System.out::println);
     }
 }
