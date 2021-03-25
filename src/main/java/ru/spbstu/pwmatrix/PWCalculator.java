@@ -9,21 +9,38 @@ import ru.spbstu.fastafile.FastaFile;
 public class PWCalculator {
 
     /**
-     * Fastafile - fasta dataset
-     * PWMatrix - position weight matrix
+     * Calculate position weight matrix with necessary output format
+     * @param fastaFile - fasta file with dataset
+     * @param strategy - strategy for calculation
+     * @return calculated position weight matrix
      */
 
-    private final FastaFile fastaFile;
-    private PWMatrix data;
-
-
-    public PWCalculator(FastaFile fastaFile, int sequenceLength) {
-        this.fastaFile = fastaFile;
-        this.data = new PWMatrix(sequenceLength);
+    public PWMatrix calculateMatrix(FastaFile fastaFile, CalculationStrategy strategy) {
+        PWMatrix pwm = new PWMatrix(strategy.sequenceLength);
+        switch (strategy.resultFrequency) {
+            case ("absolute"):
+                calculateAbsoluteMatrix(pwm, fastaFile);
+                break;
+            case ("relative"):
+                calculateRelativeMatrix(pwm, fastaFile);
+                break;
+            case ("loglikelihood"):
+                calculateLogLikelihoodMatrix(pwm, fastaFile, strategy.frequencyOfNucleotides);
+                break;
+        }
+        return pwm;
     }
 
-    public PWMatrix calculateMatrix(double frequencyOfNucleotides) {
-        data.calculateMatrix(fastaFile, frequencyOfNucleotides);
-        return data;
+    private void calculateAbsoluteMatrix(PWMatrix pwm, FastaFile fastaFile) {
+        pwm.calculateAbsoluteFrequencies(fastaFile);
+    }
+    private void calculateRelativeMatrix(PWMatrix pwm, FastaFile fastaFile) {
+        pwm.calculateAbsoluteFrequencies(fastaFile);
+        pwm.calculateRelativeFrequencies();
+    }
+    private void calculateLogLikelihoodMatrix(PWMatrix pwm, FastaFile fastaFile, double frequencyOfNucleotides) {
+        pwm.calculateAbsoluteFrequencies(fastaFile);
+        pwm.calculateRelativeFrequencies();
+        pwm.calculateLogLikelihood(frequencyOfNucleotides);
     }
 }
