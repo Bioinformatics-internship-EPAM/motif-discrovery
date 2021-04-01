@@ -18,13 +18,13 @@ public class PWCalculator {
     public PWMatrix calculateMatrix(FastaFile fastaFile, CalculationStrategy strategy) {
         PWMatrix pwm = new PWMatrix(strategy.sequenceLength);
         switch (strategy.resultFrequency) {
-            case ("absolute"):
+            case ABSOLUTE:
                 calculateAbsoluteMatrix(pwm, fastaFile);
                 break;
-            case ("relative"):
+            case RELATIVE:
                 calculateRelativeMatrix(pwm, fastaFile);
                 break;
-            case ("loglikelihood"):
+            case LOGLIKELIHOOD:
                 calculateLogLikelihoodMatrix(pwm, fastaFile, strategy.frequencyOfNucleotides);
                 break;
         }

@@ -20,7 +20,7 @@ public class Main {
         }
         PWCalculator pwCalculator = new PWCalculator();
         PWMatrix matrix = pwCalculator.calculateMatrix(file, new CalculationStrategy(Constants.frequency,
-                Constants.DEFAULT_WINDOW_SIZE, "loglikelihood"));
+                Constants.DEFAULT_WINDOW_SIZE, Constants.calculationMethod.LOGLIKELIHOOD));
         SimilarityScoreCalculator smCalculator = new SimilarityScoreCalculator(Constants.DEFAULT_WINDOW_SIZE, file);
         DatasetScore resultScore = smCalculator.calculateScore(matrix);
         MotifReporter.reportTopFive(resultScore, System.out);
