@@ -1,6 +1,6 @@
 package ru.spbstu.calculator;
 
-import ru.spbstu.fastafile.FastaFileParser;
+import ru.spbstu.fastafile.FastaFile;
 import ru.spbstu.fastafile.FastaRecord;
 
 import java.util.ArrayList;
@@ -12,14 +12,14 @@ import java.util.List;
 public class SimilarityScoreCalculator {
 
     private final int windowSize;
-    private final FastaFileParser dataset;
+    private final FastaFile dataset;
 
     private PWMatrix PWM;
 
     /**
      * Must be constructed one time before loop of finding the best motif
      */
-    public SimilarityScoreCalculator(int windowSize, FastaFileParser dataset) {
+    public SimilarityScoreCalculator(int windowSize, FastaFile dataset) {
         this.windowSize = windowSize;
         this.dataset = dataset;
     }

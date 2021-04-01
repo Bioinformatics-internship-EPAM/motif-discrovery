@@ -10,21 +10,11 @@ import java.util.List;
 import java.util.stream.Stream;
 
 /**
- * FastaFile contains instances of FastaRecord class in list
- * It encapsulates methods to read those records from file
+ * FastaFileParser encapsulates logic of parsing Fasta file format in FastaRecord
  * More about fasta format https://en.wikipedia.org/wiki/FASTA_format
- * FastaFile represents such format https://meme-suite.org/meme/doc/examples/example-datasets/crp0.fna
+ * Implement interface Parser
  */
 public class FastaFileParser implements Parser {
-
-    /**
-     * fastaRecords contains list of records from fasta file
-     * example of single record:
-     * >ce1cg 17 61
-     * TAATGTTTGTGCTGGTTTTTGTGGCATCGGGCGAGAATAGCGCGTGGTGTGAAAGACTGTTTTTTTGATCGTTTTCACAA
-     * AAATGGAAGTCCACAGTCTTGACAG
-     */
-    private List<FastaRecord> fastaRecords;
 
     /**
      * IDENTIFIER is a character from single record is started, used to separate such records in single fasta file
@@ -32,15 +22,14 @@ public class FastaFileParser implements Parser {
     private final static String IDENTIFIER = ">";
 
     private String fastaFileName;
-
+    private List<FastaRecord> fastaRecords;
 
     public FastaFileParser(String fastaFileName) {
         this.fastaFileName = fastaFileName;
-        this.fastaRecords = new ArrayList<>();
     }
 
     /**
-     * readFastaFile read stream of lines from file with given name using java.nio.Files and delegates parsing
+     * parseData read stream of lines from file with given name using java.nio.Files and delegates parsing
      * to parseFastaLine function. Return fastaRecords field
      *
      * @param
@@ -52,15 +41,6 @@ public class FastaFileParser implements Parser {
         Stream<String> lines = Files.lines(path);
         parseFastaLine(lines);
         return this.fastaRecords;
-    }
-
-    /**
-     * Getter for fastaRecords field
-     *
-     * @return fastaRecords
-     */
-    public List<FastaRecord> getFastaRecords() {
-        return fastaRecords;
     }
 
     /**

@@ -3,19 +3,25 @@ package ru.spbstu.pwmatrix;
 import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;
+
 import ru.spbstu.fastafile.FastaFile;
+import ru.spbstu.fastafile.FastaFileParser;
+import ru.spbstu.fastafile.FastaRecord;
+import ru.spbstu.fastafile.Parser;
 
 import java.io.IOException;
+import java.util.List;
 
 public class PWCalculatorTest {
     private FastaFile fastaFile;
     private final double delta = 0.00000000001;
 
     @Before
-    public void setup() throws IOException {
-        fastaFile = new FastaFile();
+    public void setup() throws Exception {
         String fileName = "src/test/resources/PWTest";
-        fastaFile.readFastaFile(fileName);
+        Parser fastaFileParse = new FastaFileParser(fileName);
+        List<FastaRecord> fastaRecords = fastaFileParse.parseData();
+        fastaFile = new FastaFile(fastaRecords);
     }
 
     @Test

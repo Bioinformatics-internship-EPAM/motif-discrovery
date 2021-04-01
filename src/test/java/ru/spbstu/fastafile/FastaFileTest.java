@@ -13,13 +13,13 @@ public class FastaFileTest {
 
     @Before
     public void setup() {
-        fastaFile = new FastaFileParser();
+        final String fileName = "src/test/resources/test";
+        fastaFile = new FastaFileParser(fileName);
     }
 
     @Test
     public void readFastaFileSuccess() throws IOException {
-        final String fileName = "src/test/resources/test";
-        List<FastaRecord> fastaRecords = fastaFile.parseData(fileName);
+        List<FastaRecord> fastaRecords = fastaFile.parseData();
         Assert.assertEquals(2, fastaRecords.size());
         FastaRecord fastaRecord = fastaRecords.get(0);
         Assert.assertEquals("bglr1", fastaRecord.getId());

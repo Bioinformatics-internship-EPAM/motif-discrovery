@@ -4,20 +4,24 @@ import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
+import ru.spbstu.fastafile.FastaFile;
 import ru.spbstu.fastafile.FastaFileParser;
+import ru.spbstu.fastafile.FastaRecord;
+import ru.spbstu.fastafile.Parser;
 
-import java.io.IOException;
+import java.util.List;
 
 public class SimilarityScoreCalculatorTest {
 
-    private FastaFileParser fastaFile;
+    private FastaFile fastaFile;
     private final double delta = 0.0001;
 
     @Before
-    public void setup() throws IOException {
-        fastaFile = new FastaFileParser();
+    public void setup() throws Exception {
         final String fileName = "src/test/resources/calculator-test";
-        fastaFile.parseData(fileName);
+        Parser fastaFileParser = new FastaFileParser(fileName);
+        List<FastaRecord> fastaRecords = fastaFileParser.parseData();
+        fastaFile = new FastaFile(fastaRecords);
     }
 
     @Test
