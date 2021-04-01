@@ -1,4 +1,4 @@
-package ru.spbstu.pwmatrix;
+package ru.spbstu.calculator;
 
 /**
  * Represents parameters for calculation position weight matrix
@@ -14,7 +14,7 @@ public class CalculationStrategy {
     public String resultFrequency;
 
 
-    CalculationStrategy(double frequencyOfNucleotides, int sequenceLength, String resultFrequency) {
+    public CalculationStrategy(double frequencyOfNucleotides, int sequenceLength, String resultFrequency) {
         this.frequencyOfNucleotides = frequencyOfNucleotides;
         this.sequenceLength = sequenceLength;
         this.resultFrequency = resultFrequency;

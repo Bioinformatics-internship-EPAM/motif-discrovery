@@ -1,4 +1,4 @@
-package ru.spbstu.pwmatrix;
+package ru.spbstu.calculator;
 
 import ru.spbstu.fastafile.FastaFile;
 

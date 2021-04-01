@@ -33,6 +33,15 @@ public class Motif implements Comparable<Motif>{
 
     @Override
     public int compareTo(Motif o) {
-        return (int) (this.score - o.score) * EPS_SCORE_COMPARE;
+        return Double.compare(this.score, o.score);
+    }
+
+    @Override
+    public String toString() {
+        return "Motif{" +
+                "recordID='" + recordID + '\'' +
+                ", position=" + position +
+                ", score=" + score +
+                '}';
     }
 }
