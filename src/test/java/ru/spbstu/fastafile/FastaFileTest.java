@@ -9,17 +9,17 @@ import java.util.List;
 
 public class FastaFileTest {
 
-    private FastaFile fastaFile;
+    private FastaFileParser fastaFile;
 
     @Before
     public void setup() {
-        fastaFile = new FastaFile();
+        fastaFile = new FastaFileParser();
     }
 
     @Test
     public void readFastaFileSuccess() throws IOException {
         final String fileName = "src/test/resources/test";
-        List<FastaRecord> fastaRecords = fastaFile.readFastaFile(fileName);
+        List<FastaRecord> fastaRecords = fastaFile.parseData(fileName);
         Assert.assertEquals(2, fastaRecords.size());
         FastaRecord fastaRecord = fastaRecords.get(0);
         Assert.assertEquals("bglr1", fastaRecord.getId());

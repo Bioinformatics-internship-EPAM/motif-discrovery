@@ -15,7 +15,7 @@ import java.util.stream.Stream;
  * More about fasta format https://en.wikipedia.org/wiki/FASTA_format
  * FastaFile represents such format https://meme-suite.org/meme/doc/examples/example-datasets/crp0.fna
  */
-public class FastaFile {
+public class FastaFileParser implements Parser {
 
     /**
      * fastaRecords contains list of records from fasta file
@@ -31,8 +31,11 @@ public class FastaFile {
      */
     private final static String IDENTIFIER = ">";
 
+    private String fastaFileName;
 
-    public FastaFile() {
+
+    public FastaFileParser(String fastaFileName) {
+        this.fastaFileName = fastaFileName;
         this.fastaRecords = new ArrayList<>();
     }
 
@@ -40,12 +43,12 @@ public class FastaFile {
      * readFastaFile read stream of lines from file with given name using java.nio.Files and delegates parsing
      * to parseFastaLine function. Return fastaRecords field
      *
-     * @param filePath is a path to fasta file
+     * @param
      * @return List of string
      * @throws IOException
      */
-    public List<FastaRecord> readFastaFile(String filePath) throws IOException {
-        Path path = Paths.get(filePath);
+    public List<FastaRecord> parseData() throws IOException {
+        Path path = Paths.get(this.fastaFileName);
         Stream<String> lines = Files.lines(path);
         parseFastaLine(lines);
         return this.fastaRecords;
