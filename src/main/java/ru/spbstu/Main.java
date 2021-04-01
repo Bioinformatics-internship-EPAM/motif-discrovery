@@ -1,13 +1,11 @@
 package ru.spbstu;
 
+
 import ru.spbstu.calculator.*;
 import ru.spbstu.fastafile.FastaFile;
 import ru.spbstu.reporter.MotifReporter;
 
-import java.io.BufferedWriter;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.Writer;
 
 
 public class Main {
