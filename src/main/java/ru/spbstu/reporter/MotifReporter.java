@@ -6,7 +6,7 @@ import java.io.PrintStream;
 import java.util.Comparator;
 
 public class MotifReporter {
-    public static void reportTopFive(DatasetScore result, PrintStream output) {
-        result.getData().stream().sorted(Comparator.reverseOrder()).limit(5).forEach(output::println);
+    public static void reportTopResults(DatasetScore result, PrintStream output, int count) {
+        result.getData().stream().sorted(Comparator.reverseOrder()).limit(count).forEach(output::println);
     }
 }

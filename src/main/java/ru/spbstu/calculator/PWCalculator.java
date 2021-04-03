@@ -16,8 +16,8 @@ public class PWCalculator {
      */
 
     public PWMatrix calculateMatrix(FastaFile fastaFile, CalculationStrategy strategy) {
-        PWMatrix pwm = new PWMatrix(strategy.sequenceLength);
-        switch (strategy.resultFrequency) {
+        PWMatrix pwm = new PWMatrix(strategy.getSequenceLength());
+        switch (strategy.getResultFrequency()) {
             case ABSOLUTE:
                 calculateAbsoluteMatrix(pwm, fastaFile);
                 break;
@@ -25,7 +25,7 @@ public class PWCalculator {
                 calculateRelativeMatrix(pwm, fastaFile);
                 break;
             case LOGLIKELIHOOD:
-                calculateLogLikelihoodMatrix(pwm, fastaFile, strategy.frequencyOfNucleotides);
+                calculateLogLikelihoodMatrix(pwm, fastaFile, strategy.getFrequencyOfNucleotides());
                 break;
         }
         return pwm;
