@@ -10,14 +10,9 @@ import java.io.IOException;
 
 public class Main {
     private static final String FASTA_FILENAME = "src/main/resources/PWMSample";
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
         FastaFile file = new FastaFile();
-        try {
-            file.readFastaFile(FASTA_FILENAME);
-        } catch (IOException e) {
-            System.err.println(e.toString());
-            System.exit(0);
-        }
+        file.readFastaFile(FASTA_FILENAME);
         PWCalculator pwCalculator = new PWCalculator();
         PWMatrix matrix = pwCalculator.calculateMatrix(file, new CalculationStrategy(Constants.frequency,
                 Constants.DEFAULT_WINDOW_SIZE, Constants.calculationMethod.LOGLIKELIHOOD));
