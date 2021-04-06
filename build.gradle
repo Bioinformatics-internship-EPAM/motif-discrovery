@@ -28,11 +28,3 @@ application {
     // Define the main class for the application.
     mainClass = 'ru.spbstu.Main'
 }
-
-sourceSets {
-    test {
-        java {
-            exclude 'ru/*'
-        }
-    }
-}

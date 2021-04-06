@@ -32,6 +32,10 @@ public class PWMatrix {
     }
 
     public PWRow getRowByNucleotide(char nucleotide) {
+        if (!Constants.NUCLEOTIDES.contains(nucleotide)) {
+            throw new IncorrectNucleotideException(nucleotide);
+        }
+
         return pwmatrix.get(nucleotide);
     }
 

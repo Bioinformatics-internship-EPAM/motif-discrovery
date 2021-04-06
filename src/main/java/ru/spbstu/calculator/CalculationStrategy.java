@@ -17,11 +17,14 @@ public class CalculationStrategy {
     public static class Builder {
 
         private double frequencyOfNucleotides = Constants.frequency;
-        private final int sequenceLength;
+        private int sequenceLength = Constants.DEFAULT_WINDOW_SIZE;
         private calculationMethod calculationType = calculationMethod.LOGLIKELIHOOD;
 
-        public Builder(int sequenceLength) {
-            this.sequenceLength = sequenceLength;
+        public Builder() { }
+
+        public Builder sequenceLength(int value) {
+            this.sequenceLength = value;
+            return this;
         }
 
         public Builder frequencyOfNucleotides(double value) {
