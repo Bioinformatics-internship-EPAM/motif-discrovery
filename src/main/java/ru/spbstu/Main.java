@@ -1,20 +1,27 @@
 package ru.spbstu;
 
-import ru.spbstu.fastafile.FastaFile;
-import ru.spbstu.fastafile.FastaRecord;
-import ru.spbstu.fastafile.Parser;
-import ru.spbstu.reader.CommandLineFactory;
-import ru.spbstu.reader.ParserFactory;
 
-import java.util.List;
+import ru.spbstu.calculator.*;
+import ru.spbstu.fastafile.FastaFile;
+import ru.spbstu.reporter.MotifReporter;
+
+import java.io.IOException;
+
 
 public class Main {
-    public static void main(String[] args) throws Exception {
-        ParserFactory commandLineReader = new CommandLineFactory(args);
-        Parser fastaFileParser = commandLineReader.createParser();
-        if (fastaFileParser != null) {
-            List<FastaRecord> fastaRecords = fastaFileParser.parseData();
-            FastaFile fastaFile = new FastaFile(fastaRecords);
-        }
+
+    private static final int TOP_COUNT = 5;
+    private static final String FASTA_FILENAME = "src/main/resources/PWMSample";
+
+
+    public static void main(String[] args) throws IOException {
+        FastaFile file = new FastaFile();
+        file.readFastaFile(FASTA_FILENAME);
+        PWCalculator pwCalculator = new PWCalculator();
+        PWMatrix matrix = pwCalculator.calculateMatrix(file, new CalculationStrategy
+                .Builder(Constants.DEFAULT_WINDOW_SIZE).build());
+        SimilarityScoreCalculator smCalculator = new SimilarityScoreCalculator(Constants.DEFAULT_WINDOW_SIZE, file);
+        DatasetScore resultScore = smCalculator.calculateScore(matrix);
+        MotifReporter.reportTopResults(resultScore, System.out, TOP_COUNT);
     }
 }
