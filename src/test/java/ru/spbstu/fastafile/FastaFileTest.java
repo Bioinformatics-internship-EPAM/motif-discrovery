@@ -3,23 +3,20 @@ package ru.spbstu.fastafile;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import ru.spbstu.reader.DefaultReader;
+import ru.spbstu.reader.Reader;
 
 import java.io.IOException;
 import java.util.List;
 
 public class FastaFileTest {
 
-    private FastaFileParser fastaFile;
-
-    @Before
-    public void setup() {
-        final String fileName = "src/test/resources/test";
-        fastaFile = new FastaFileParser(fileName);
-    }
-
     @Test
-    public void readFastaFileSuccess() throws IOException {
-        List<FastaRecord> fastaRecords = fastaFile.parseData();
+    public void readFastaFileSuccess() throws Exception {
+        final String fileName = "src/test/resources/test";
+        Parser fastaFile = new FastaFileParser();
+        Reader defaultReader = new DefaultReader(fileName);
+        List<FastaRecord> fastaRecords = fastaFile.parseData(defaultReader.readData());
         Assert.assertEquals(2, fastaRecords.size());
         FastaRecord fastaRecord = fastaRecords.get(0);
         Assert.assertEquals("bglr1", fastaRecord.getId());

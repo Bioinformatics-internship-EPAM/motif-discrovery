@@ -1,11 +1,9 @@
 package ru.spbstu.reader;
 
 import org.apache.commons.cli.*;
-import ru.spbstu.fastafile.FastaFileParser;
-import ru.spbstu.fastafile.Parser;
 
-public class CommandLineFactory implements ParserFactory {
-    private CommandLineParser parser;
+public class CommandLineParser {
+    private org.apache.commons.cli.CommandLineParser parser;
     private HelpFormatter formatter;
     private CommandLine cmd;
     private Options options;
@@ -13,10 +11,11 @@ public class CommandLineFactory implements ParserFactory {
 
     private final static String FILE_PATH_OPTION = "file-path";
     private final static String FILE_PATH_SHORT_OPTION = "p";
-    private final static String DESCRIPTION = "Fasta file path";
     private final static String PROJECT = "motif-discovery";
+    private static final String DEFAULT_FASTA_FILENAME = "src/main/resources/PWMSample";
+    private final static String DESCRIPTION = "Fasta file path, default value: " + DEFAULT_FASTA_FILENAME;
 
-    public CommandLineFactory(String[] args) {
+    public CommandLineParser(String[] args) {
         parser = new DefaultParser();
         formatter = new HelpFormatter();
         options = new Options();
@@ -33,23 +32,21 @@ public class CommandLineFactory implements ParserFactory {
         cmd = parser.parse(options, args);
     }
 
-    private String getFastaFileName() {
+    private String getFastaFileFromOptions() {
         if( cmd.hasOption( FILE_PATH_OPTION ) ) {
             return cmd.getOptionValue(FILE_PATH_OPTION);
         }
-        return "";
+        return DEFAULT_FASTA_FILENAME;
     }
 
-    @Override
-    public Parser createParser() {
+    public String getFastaFileNameFromCmd() {
         configureCommandLineOptions();
         try {
             parseArguments();
         } catch (ParseException e) {
             formatter.printHelp(PROJECT, options);
-            return null;
+            return DEFAULT_FASTA_FILENAME;
         }
-        String fastaFileName = getFastaFileName();
-        return new FastaFileParser(fastaFileName);
+        return getFastaFileFromOptions();
     }
 }

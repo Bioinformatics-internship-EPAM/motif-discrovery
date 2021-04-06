@@ -4,12 +4,16 @@ import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
+import ru.spbstu.calculator.CalculationStrategy;
+import ru.spbstu.calculator.PWCalculator;
+import ru.spbstu.calculator.PWMatrix;
 import ru.spbstu.fastafile.FastaFile;
 import ru.spbstu.fastafile.FastaFileParser;
 import ru.spbstu.fastafile.FastaRecord;
 import ru.spbstu.fastafile.Parser;
+import ru.spbstu.reader.DefaultReader;
+import ru.spbstu.reader.Reader;
 
-import java.io.IOException;
 import java.util.List;
 
 public class PWCalculatorTest {
@@ -19,8 +23,9 @@ public class PWCalculatorTest {
     @Before
     public void setup() throws Exception {
         String fileName = "src/test/resources/PWTest";
-        Parser fastaFileParse = new FastaFileParser(fileName);
-        List<FastaRecord> fastaRecords = fastaFileParse.parseData();
+        Parser fastaFileParse = new FastaFileParser();
+        Reader defaultReader = new DefaultReader(fileName);
+        List<FastaRecord> fastaRecords = fastaFileParse.parseData(defaultReader.readData());
         fastaFile = new FastaFile(fastaRecords);
     }
 

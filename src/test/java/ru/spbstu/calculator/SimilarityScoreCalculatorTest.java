@@ -8,6 +8,7 @@ import ru.spbstu.fastafile.FastaFile;
 import ru.spbstu.fastafile.FastaFileParser;
 import ru.spbstu.fastafile.FastaRecord;
 import ru.spbstu.fastafile.Parser;
+import ru.spbstu.reader.DefaultReader;
 
 import java.util.List;
 
@@ -19,8 +20,9 @@ public class SimilarityScoreCalculatorTest {
     @Before
     public void setup() throws Exception {
         final String fileName = "src/test/resources/calculator-test";
-        Parser fastaFileParser = new FastaFileParser(fileName);
-        List<FastaRecord> fastaRecords = fastaFileParser.parseData();
+        DefaultReader reader = new DefaultReader(fileName);
+        Parser fastaFileParser = new FastaFileParser();
+        List<FastaRecord> fastaRecords = fastaFileParser.parseData(reader.readData());
         fastaFile = new FastaFile(fastaRecords);
     }
 

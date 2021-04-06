@@ -1,6 +1,9 @@
 package ru.spbstu.fastafile;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -21,26 +24,22 @@ public class FastaFileParser implements Parser {
      */
     private final static String IDENTIFIER = ">";
 
-    private String fastaFileName;
     private List<FastaRecord> fastaRecords;
 
-    public FastaFileParser(String fastaFileName) {
-        this.fastaFileName = fastaFileName;
-    }
+    public FastaFileParser() { }
 
     /**
      * parseData read stream of lines from file with given name using java.nio.Files and delegates parsing
      * to parseFastaLine function. Return fastaRecords field
      *
-     * @param
+     * @param InputStream inputStream
      * @return List of string
-     * @throws IOException
      */
-    public List<FastaRecord> parseData() throws IOException {
-        Path path = Paths.get(this.fastaFileName);
-        Stream<String> lines = Files.lines(path);
-        parseFastaLine(lines);
-        return this.fastaRecords;
+    public List<FastaRecord> parseData(InputStream inputStream) throws IOException {
+        try (BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream))) {
+            parseFastaLine(reader.lines());
+            return this.fastaRecords;
+        }
     }
 
     /**
