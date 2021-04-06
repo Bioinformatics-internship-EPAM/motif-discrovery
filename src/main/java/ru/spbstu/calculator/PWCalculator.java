@@ -1,4 +1,4 @@
-package ru.spbstu.pwmatrix;
+package ru.spbstu.calculator;
 
 import ru.spbstu.fastafile.FastaFile;
 
@@ -16,16 +16,16 @@ public class PWCalculator {
      */
 
     public PWMatrix calculateMatrix(FastaFile fastaFile, CalculationStrategy strategy) {
-        PWMatrix pwm = new PWMatrix(strategy.sequenceLength);
-        switch (strategy.resultFrequency) {
-            case ("absolute"):
+        PWMatrix pwm = new PWMatrix(strategy.getSequenceLength());
+        switch (strategy.getResultFrequency()) {
+            case ABSOLUTE:
                 calculateAbsoluteMatrix(pwm, fastaFile);
                 break;
-            case ("relative"):
+            case RELATIVE:
                 calculateRelativeMatrix(pwm, fastaFile);
                 break;
-            case ("loglikelihood"):
-                calculateLogLikelihoodMatrix(pwm, fastaFile, strategy.frequencyOfNucleotides);
+            case LOGLIKELIHOOD:
+                calculateLogLikelihoodMatrix(pwm, fastaFile, strategy.getFrequencyOfNucleotides());
                 break;
         }
         return pwm;

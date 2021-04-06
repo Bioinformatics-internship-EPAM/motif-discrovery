@@ -26,5 +26,13 @@ dependencies {
 
 application {
     // Define the main class for the application.
-    mainClass = 'Main'
+    mainClass = 'ru.spbstu.Main'
+}
+
+sourceSets {
+    test {
+        java {
+            exclude 'ru/*'
+        }
+    }
 }

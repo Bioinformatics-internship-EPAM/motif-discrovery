@@ -64,7 +64,7 @@ public class SimilarityScoreCalculator {
 
         for (int i = 0; i < windowSize; i++) {
             char ch = sequence.charAt(i + position);
-            sum += PWM.getRow(ch)[i];
+            sum += PWM.getRowByNucleotide(ch).getByIndex(i);
         }
 
         return sum;

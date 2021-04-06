@@ -1,4 +1,4 @@
-package ru.spbstu.pwmatrix;
+package ru.spbstu.calculator;
 
 /**
  * PWRow represents data of frequency for one nucleotide at every position
