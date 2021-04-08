@@ -11,15 +11,18 @@ plugins {
     id 'application'
 }
 
+group 'ru.spbstu'
+version '0.0.1'
+
 repositories {
     // Use JCenter for resolving dependencies.
-    jcenter()
+    mavenCentral()
 }
 
 dependencies {
     // Use JUnit test framework.
     testImplementation 'junit:junit:4.13'
-
+    compile group: 'commons-cli', name: 'commons-cli', version: '1.4'
     // This dependency is used by the application.
     //implementation 'com.google.guava:guava:29.0-jre'
 }

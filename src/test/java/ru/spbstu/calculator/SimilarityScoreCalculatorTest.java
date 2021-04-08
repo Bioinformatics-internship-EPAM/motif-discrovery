@@ -5,8 +5,12 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 
 import ru.spbstu.fastafile.FastaFile;
+import ru.spbstu.fastafile.FastaFileParser;
+import ru.spbstu.fastafile.FastaRecord;
+import ru.spbstu.fastafile.Parser;
+import ru.spbstu.reader.DefaultReader;
 
-import java.io.IOException;
+import java.util.List;
 
 public class SimilarityScoreCalculatorTest {
 
@@ -14,10 +18,12 @@ public class SimilarityScoreCalculatorTest {
     private final double delta = 0.0001;
 
     @Before
-    public void setup() throws IOException {
-        fastaFile = new FastaFile();
+    public void setup() throws Exception {
         final String fileName = "src/test/resources/calculator-test";
-        fastaFile.readFastaFile(fileName);
+        DefaultReader reader = new DefaultReader(fileName);
+        Parser fastaFileParser = new FastaFileParser();
+        List<FastaRecord> fastaRecords = fastaFileParser.parseData(reader.readData());
+        fastaFile = new FastaFile(fastaRecords);
     }
 
     @Test
