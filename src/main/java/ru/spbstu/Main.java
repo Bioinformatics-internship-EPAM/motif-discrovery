@@ -10,6 +10,7 @@ import ru.spbstu.reader.CommandLineParser;
 import ru.spbstu.reader.CommandLineReader;
 import ru.spbstu.reader.Reader;
 import ru.spbstu.reporter.MotifReporter;
+import ru.spbstu.recognizer.GibbsMotifRecognizer;
 
 import java.io.InputStream;
 import java.util.List;
@@ -25,11 +26,17 @@ public class Main {
         Parser fastaFileParser = new FastaFileParser();
         List<FastaRecord> fastaRecords = fastaFileParser.parseData(data);
         FastaFile fastaFile = new FastaFile(fastaRecords);
-        PWCalculator pwCalculator = new PWCalculator();
-        PWMatrix matrix = pwCalculator.calculateMatrix(fastaFile, new CalculationStrategy
-                                      .Builder(Constants.DEFAULT_WINDOW_SIZE).build());
+        PWCalculator pwCalculator = new PWCalculator(new CalculationStrategy
+                .Builder(Constants.DEFAULT_WINDOW_SIZE).build());
+        MotifSet motifSet = new MotifSet(fastaFile, MotifSet.Policy.FIRST, Constants.DEFAULT_WINDOW_SIZE);
+        PWMatrix matrix = pwCalculator.calculateMatrix(motifSet);
         SimilarityScoreCalculator smCalculator = new SimilarityScoreCalculator(Constants.DEFAULT_WINDOW_SIZE, fastaFile);
         DatasetScore resultScore = smCalculator.calculateScore(matrix);
+        System.out.println(matrix);
         MotifReporter.reportTopResults(resultScore, System.out, TOP_COUNT);
+
+        System.out.println("Matrix with the most scored motifset: ");
+        GibbsMotifRecognizer recognizer = new GibbsMotifRecognizer();
+        System.out.println(recognizer.recognize(fastaFile));
     }
 }

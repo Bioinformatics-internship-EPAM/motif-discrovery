@@ -1,45 +1,48 @@
 package ru.spbstu.calculator;
 
-import ru.spbstu.fastafile.FastaFile;
-
 /**
  * PWCalculator contains position weight matrix and method for calculating it
  */
 
 public class PWCalculator {
 
+    private final CalculationStrategy strategy;
+
+    public PWCalculator(CalculationStrategy strategy) {
+        this.strategy = strategy;
+    }
+
     /**
      * Calculate position weight matrix with necessary output format
-     * @param fastaFile - fasta file with dataset
-     * @param strategy - strategy for calculation
+     * @param ms - MotifSet
      * @return calculated position weight matrix
      */
 
-    public PWMatrix calculateMatrix(FastaFile fastaFile, CalculationStrategy strategy) {
+    public PWMatrix calculateMatrix(MotifSet ms) {
         PWMatrix pwm = new PWMatrix(strategy.getSequenceLength());
         switch (strategy.getResultFrequency()) {
             case ABSOLUTE:
-                calculateAbsoluteMatrix(pwm, fastaFile);
+                calculateAbsoluteMatrix(pwm, ms);
                 break;
             case RELATIVE:
-                calculateRelativeMatrix(pwm, fastaFile);
+                calculateRelativeMatrix(pwm, ms);
                 break;
             case LOGLIKELIHOOD:
-                calculateLogLikelihoodMatrix(pwm, fastaFile, strategy.getFrequencyOfNucleotides());
+                calculateLogLikelihoodMatrix(pwm, ms, strategy.getFrequencyOfNucleotides());
                 break;
         }
         return pwm;
     }
 
-    private void calculateAbsoluteMatrix(PWMatrix pwm, FastaFile fastaFile) {
-        pwm.calculateAbsoluteFrequencies(fastaFile);
+    private void calculateAbsoluteMatrix(PWMatrix pwm, MotifSet ms) {
+        pwm.calculateAbsoluteFrequencies(ms);
     }
-    private void calculateRelativeMatrix(PWMatrix pwm, FastaFile fastaFile) {
-        pwm.calculateAbsoluteFrequencies(fastaFile);
+    private void calculateRelativeMatrix(PWMatrix pwm, MotifSet ms) {
+        pwm.calculateAbsoluteFrequencies(ms);
         pwm.calculateRelativeFrequencies();
     }
-    private void calculateLogLikelihoodMatrix(PWMatrix pwm, FastaFile fastaFile, double frequencyOfNucleotides) {
-        pwm.calculateAbsoluteFrequencies(fastaFile);
+    private void calculateLogLikelihoodMatrix(PWMatrix pwm, MotifSet ms, double frequencyOfNucleotides) {
+        pwm.calculateAbsoluteFrequencies(ms);
         pwm.calculateRelativeFrequencies();
         pwm.calculateLogLikelihood(frequencyOfNucleotides);
     }
