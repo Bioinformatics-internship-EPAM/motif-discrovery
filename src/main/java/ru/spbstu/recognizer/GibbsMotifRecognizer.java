@@ -29,24 +29,29 @@ public class GibbsMotifRecognizer implements MotifRecognizer {
         double delta = Double.POSITIVE_INFINITY;
 
         while ((delta > desiredDelta) || Double.isInfinite(delta)) {
-            // To not repeat random number
+            // to not repeat random number in loop
             while (nextRand == prevRand) {
                 nextRand = random.nextInt(records.size() - 1);
             }
             prevRand = nextRand;
 
+            // random record
             FastaRecord nextRecord = records.get(nextRand);
 
+            // find Motif with the highest score
             DatasetScore resultScore = smCalculator.calculateScoreForRecord(nextRecord, matrix);
             ScoredMotif maxScoredMotif = resultScore.getMax();
 
+            // Change found Motif with one with same recordID
             motifSet.setMotif(maxScoredMotif);
 
+            // update delta
             PWMatrix newMatrix = pwCalculator.calculateMatrix(motifSet);
             delta = matrix.countDelta(newMatrix);
             matrix = newMatrix;
         }
 
+        // recount matrix cause relative format is more human-readable
         pwCalculator = new PWCalculator(new CalculationStrategy
                 .Builder(Constants.DEFAULT_WINDOW_SIZE).calculationType(Constants.calculationMethod.RELATIVE).build());
         return pwCalculator.calculateMatrix(motifSet);
