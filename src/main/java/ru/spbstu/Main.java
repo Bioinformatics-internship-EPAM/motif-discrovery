@@ -21,6 +21,7 @@ public class Main {
     private static final int TOP_COUNT = 5;
 
     public static void main(String[] args) throws Exception {
+        // Execute one iteration
         Reader commandLineReader = new CommandLineReader(new CommandLineParser(args));
         InputStream data = commandLineReader.readData();
         Parser fastaFileParser = new FastaFileParser();
@@ -35,6 +36,7 @@ public class Main {
         System.out.println(matrix);
         MotifReporter.reportTopResults(resultScore, System.out, TOP_COUNT);
 
+        // Execute Gibbs algorithm
         System.out.println("Matrix with the most scored motifset: ");
         GibbsMotifRecognizer recognizer = new GibbsMotifRecognizer();
         System.out.println(recognizer.recognize(fastaFile));

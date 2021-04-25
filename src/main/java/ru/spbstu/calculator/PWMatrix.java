@@ -79,7 +79,7 @@ public class PWMatrix {
      * @param motifSet - motifSet
      */
     protected void calculateAbsoluteFrequencies(MotifSet motifSet) {
-        for (String chain: motifSet.getChains()) {
+        for (String chain: ChainsGetter.getChains(motifSet)) {
             analyseSequence(chain);
             numberOfSequences++;
         }

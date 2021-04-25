@@ -2,7 +2,6 @@ package ru.spbstu.calculator;
 
 public class ScoredMotif extends Motif implements Comparable<ScoredMotif> {
     private static final int EPS_SCORE_COMPARE = 100;
-    // Position of the first symbol in parent record
     private final double score;
 
     /**
@@ -11,14 +10,6 @@ public class ScoredMotif extends Motif implements Comparable<ScoredMotif> {
     public ScoredMotif(String recordID, int position, double score) {
         super(recordID, position);
         this.score = score;
-    }
-
-    public String getRecordID() {
-        return super.getRecordID();
-    }
-
-    public int getPosition() {
-        return super.getPosition();
     }
 
     public double getScore() {

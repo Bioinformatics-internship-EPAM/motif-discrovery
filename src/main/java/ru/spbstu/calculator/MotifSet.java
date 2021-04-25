@@ -9,39 +9,35 @@ import java.util.Random;
 
 public class MotifSet {
 
-    private List<Motif> data;
-    private final int sequenceLength;
-    private final FastaFile fastaFile;
+    List<Motif> data;
+    final int sequenceLength;
+    final FastaFile fastaFile;
 
     public MotifSet(FastaFile fastaFile, Policy policy, int sequenceLength) {
         this.sequenceLength = sequenceLength;
         this.fastaFile = fastaFile;
 
-        List<Motif> result = new ArrayList<>();
+        this.data = new ArrayList<>();
         switch (policy) {
             case FIRST:
-                fillWithFirst(result);
+                fillWithFirst();
                 break;
             case RANDOM:
-                fillWithRandom(result);
+                fillWithRandom();
                 break;
         }
-        this.data = result;
     }
 
-    public List<String> getChains() {
-        List<String> result = new ArrayList<>();
+    public int getSequenceLength() {
+        return sequenceLength;
+    }
 
-        List<FastaRecord> records = fastaFile.getFastaRecords();
-        for (int i = 0; i < records.size(); i++) {
-            FastaRecord record = records.get(i);
-            Motif motif = data.get(i);
+    public FastaFile getFastaFile() {
+        return fastaFile;
+    }
 
-            if (record.getId() == motif.getRecordID()) {
-                result.add(record.getChain().substring(motif.getPosition(), motif.getPosition() + sequenceLength));
-            }
-        }
-        return result;
+    public List<Motif> getData() {
+        return data;
     }
 
     public void setMotif(Motif motif) {
@@ -57,7 +53,7 @@ public class MotifSet {
         RANDOM
     }
 
-    private void fillWithFirst(List<Motif> data) {
+    private void fillWithFirst() {
         final int startPosition = 0;
         for (FastaRecord record: fastaFile.getFastaRecords()) {
             data.add(new Motif(
@@ -66,7 +62,7 @@ public class MotifSet {
         }
     }
 
-    private void fillWithRandom(List<Motif> data) {
+    private void fillWithRandom() {
         Random random = new Random();
         for (FastaRecord record: fastaFile.getFastaRecords()) {
             String chain = record.getChain();

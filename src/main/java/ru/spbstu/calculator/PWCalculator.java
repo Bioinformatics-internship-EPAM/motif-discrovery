@@ -14,21 +14,21 @@ public class PWCalculator {
 
     /**
      * Calculate position weight matrix with necessary output format
-     * @param ms - MotifSet
+     * @param motifSet - MotifSet
      * @return calculated position weight matrix
      */
 
-    public PWMatrix calculateMatrix(MotifSet ms) {
+    public PWMatrix calculateMatrix(MotifSet motifSet) {
         PWMatrix pwm = new PWMatrix(strategy.getSequenceLength());
         switch (strategy.getResultFrequency()) {
             case ABSOLUTE:
-                calculateAbsoluteMatrix(pwm, ms);
+                calculateAbsoluteMatrix(pwm, motifSet);
                 break;
             case RELATIVE:
-                calculateRelativeMatrix(pwm, ms);
+                calculateRelativeMatrix(pwm, motifSet);
                 break;
             case LOGLIKELIHOOD:
-                calculateLogLikelihoodMatrix(pwm, ms, strategy.getFrequencyOfNucleotides());
+                calculateLogLikelihoodMatrix(pwm, motifSet, strategy.getFrequencyOfNucleotides());
                 break;
         }
         return pwm;
