@@ -1,5 +1,7 @@
 package ru.spbstu.calculator;
 
+import lombok.Builder;
+import lombok.Getter;
 import ru.spbstu.calculator.Constants.calculationMethod;
 /**
  * Represents parameters for calculation position weight matrix
@@ -8,57 +10,15 @@ import ru.spbstu.calculator.Constants.calculationMethod;
  * sequenceLength - length of sequence for one iteration
  * resultFrequency - format of output data
  */
+
+@Getter
+@Builder
 public class CalculationStrategy {
 
-    private final double frequencyOfNucleotides;
-    private final int sequenceLength;
-    private final calculationMethod resultFrequency;
-
-    public static class Builder {
-
-        private double frequencyOfNucleotides = Constants.frequency;
-        private int sequenceLength = Constants.DEFAULT_WINDOW_SIZE;
-        private calculationMethod calculationType = calculationMethod.LOGLIKELIHOOD;
-
-        public Builder() { }
-
-        public Builder sequenceLength(int value) {
-            this.sequenceLength = value;
-            return this;
-        }
-
-        public Builder frequencyOfNucleotides(double value) {
-            this.frequencyOfNucleotides = value;
-            return this;
-        }
-
-        public Builder calculationType(calculationMethod value) {
-            this.calculationType = value;
-            return this;
-        }
-
-        public CalculationStrategy build() {
-            return new CalculationStrategy(this.frequencyOfNucleotides, this.sequenceLength, this.calculationType);
-        }
-    }
-
-
-
-    private CalculationStrategy(double frequencyOfNucleotides, int sequenceLength, calculationMethod resultFrequency) {
-        this.frequencyOfNucleotides = frequencyOfNucleotides;
-        this.sequenceLength = sequenceLength;
-        this.resultFrequency = resultFrequency;
-    }
-
-    public double getFrequencyOfNucleotides() {
-        return frequencyOfNucleotides;
-    }
-
-    public int getSequenceLength() {
-        return sequenceLength;
-    }
-
-    public calculationMethod getResultFrequency() {
-        return resultFrequency;
-    }
+    @Builder.Default
+    private final double frequencyOfNucleotides = Constants.frequency;
+    @Builder.Default
+    private final int sequenceLength = Constants.DEFAULT_WINDOW_SIZE;
+    @Builder.Default
+    private final calculationMethod resultFrequency = calculationMethod.LOGLIKELIHOOD;
 }

@@ -8,7 +8,7 @@ import ru.spbstu.fastafile.FastaFile;
 
 import java.io.IOException;
 
-public class SimilarityScoreCalculatorTest {
+public class SimilarityScoreCalculatorTestInfinity {
 
     private final String fastaPW = "src/test/resources/PWTest";
     private final String fastaCalculate = "src/test/resources/calculator-test";
@@ -27,7 +27,6 @@ public class SimilarityScoreCalculatorTest {
         PWCalculator pwCalculator = new PWCalculator();
         PWMatrix matrix = pwCalculator.calculateMatrix(fastaFilePW, CalculationStrategy.builder()
                 .sequenceLength(sequenceLength)
-                .resultFrequency(Constants.calculationMethod.RELATIVE)
                 .build());
 
         SimilarityScoreCalculator ssc = new SimilarityScoreCalculator(sequenceLength, fastaFile);
@@ -56,7 +55,7 @@ public class SimilarityScoreCalculatorTest {
 
     @Test
     public void testElem0Score() {
-        assertEquals(2.5D, ds.getData().get(0).getScore(), delta);
+        assertEquals(Double.NEGATIVE_INFINITY, ds.getData().get(0).getScore(), delta);
     }
 
     @Test
@@ -71,7 +70,7 @@ public class SimilarityScoreCalculatorTest {
 
     @Test
     public void testElem1Score() {
-        assertEquals(2.6D, ds.getData().get(1).getScore(), delta);
+        assertEquals(Double.NEGATIVE_INFINITY, ds.getData().get(1).getScore(), delta);
     }
 
     @Test
@@ -86,6 +85,6 @@ public class SimilarityScoreCalculatorTest {
 
     @Test
     public void testElem2Score() {
-        assertEquals(2.6D, ds.getData().get(2).getScore(), delta);
+        assertEquals(Double.NEGATIVE_INFINITY, ds.getData().get(2).getScore(), delta);
     }
 }

@@ -19,9 +19,7 @@ public class Main {
         file.readFastaFile(FASTA_FILENAME);
 
         PWCalculator pwCalculator = new PWCalculator();
-        PWMatrix matrix = pwCalculator.calculateMatrix(file, new CalculationStrategy.Builder()
-                .build());
-
+        PWMatrix matrix = pwCalculator.calculateMatrix(file, CalculationStrategy.builder().build());
         SimilarityScoreCalculator smCalculator = new SimilarityScoreCalculator(file);
         DatasetScore resultScore = smCalculator.calculateScore(matrix);
 
