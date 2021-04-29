@@ -37,7 +37,7 @@ public class PWCalculatorTest {
         String relative = "relative";
 
         CalculationStrategy strategy = new CalculationStrategy(frequencyOfNucleotides, sequenceLength, loglikelihood);
-        PWCalculator pwcalculator = new PWCalculator();
+        PWCalculator pwcalculator = new PWCalculator(strategy);
         PWMatrix matrix = pwcalculator.calculateMatrix(fastaFile, strategy);
 
         assertEquals(sequenceLength, matrix.getRowByNucleotide('A').getRow().length);
