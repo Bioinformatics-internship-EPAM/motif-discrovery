@@ -7,3 +7,8 @@ output
 how to build 
 
 how to run
+
+Authors:
+- Maksim
+- Danil
+- Anastasia
