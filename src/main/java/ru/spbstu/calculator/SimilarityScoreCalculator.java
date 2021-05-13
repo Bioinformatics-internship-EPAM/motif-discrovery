@@ -42,26 +42,28 @@ public class SimilarityScoreCalculator {
     public DatasetScore calculateScore(PWMatrix pwm) {
         DatasetScore datasetScore = new DatasetScore(windowSize);
 
-        this.PWM = pwm;
-
         for (FastaRecord record: dataset.getFastaRecords()) {
-            datasetScore.addAll(calculateScoreForRecord(record));
+            datasetScore.addAnother(calculateScoreForRecord(record, pwm));
         }
 
         return datasetScore;
     }
 
-    private List<Motif> calculateScoreForRecord(FastaRecord record) {
-        List<Motif> result = new ArrayList<>();
+    public DatasetScore calculateScoreForRecord(FastaRecord record, PWMatrix pwm) {
+        this.PWM = pwm;
+
+        List<ScoredMotif> result = new ArrayList<>();
 
         int last = record.getChain().length() - windowSize;
         for (int i = 0; i <= last; i++) {
             double score = calculateScoreForWindow(record.getChain(), i);
-            final Motif motif = new Motif(record.getId(), i, score);
+            final ScoredMotif motif = new ScoredMotif(record.getId(), i, score);
             result.add(motif);
         }
 
-        return result;
+        DatasetScore ds = new DatasetScore(windowSize);
+        ds.addAll(result);
+        return ds;
     }
 
     private double calculateScoreForWindow(String sequence, int position) {

@@ -1,10 +1,10 @@
 package ru.spbstu.calculator;
 
-import ru.spbstu.fastafile.FastaFile;
-import ru.spbstu.fastafile.FastaRecord;
-
+import java.security.InvalidAlgorithmParameterException;
+import java.util.Formatter;
 import java.util.HashMap;
 import java.util.Map;
+import java.text.DecimalFormat;
 
 /**
  * PWMatrix represents position weights matrix for nucleotides
@@ -17,7 +17,6 @@ public class PWMatrix {
     private final Map<Character, PWRow> pwmatrix;
     private final int sequenceLength;
     private int numberOfSequences;
-    private int startPosition;
 
     public PWMatrix(int sequenceLength) {
         this.pwmatrix = new HashMap<>();
@@ -27,8 +26,6 @@ public class PWMatrix {
 
         this.sequenceLength = sequenceLength;
         this.numberOfSequences = 0;
-        this.startPosition = 0;
-
     }
 
     public PWRow getRowByNucleotide(char nucleotide) {
@@ -39,15 +36,55 @@ public class PWMatrix {
         return pwmatrix.get(nucleotide);
     }
 
+    public int getSequenceLength() {
+        return sequenceLength;
+    }
+
+    @Override
+    public String toString() {
+        String s = "";
+
+        for (char nucle: Constants.NUCLEOTIDES) {
+            s += nucle + " : ";
+            for (double d : pwmatrix.get(nucle).getRow()) {
+                s += new Formatter().format("%.2f", d);
+                s += '\t';
+            }
+            s += '\n';
+        }
+        return s;
+    }
+
+    public double countDelta(PWMatrix other) throws InvalidAlgorithmParameterException {
+        if (sequenceLength != other.getSequenceLength()) {
+            throw new InvalidAlgorithmParameterException();
+        }
+
+        double delta = 0.0;
+
+        for (char nucle: Constants.NUCLEOTIDES) {
+            double[] thisRow = pwmatrix.get(nucle).getRow();
+            double[] otherRow = other.getRowByNucleotide(nucle).getRow();
+
+            for (int i = 0; i < thisRow.length; i ++) {
+                if (!((Double.isInfinite(thisRow[i]) && Double.isInfinite(otherRow[i])))) {
+                    delta += Math.pow((thisRow[i] - otherRow[i]), 2);
+                }
+            }
+        }
+
+        return delta;
+    }
+
     /**
      * Fills matrix with count of nucleotides on every position
      * in sequences with length == sequenceLength
      *
-     * @param fastaFile - fastafile
+     * @param motifSet - motifSet
      */
-    protected void calculateAbsoluteFrequencies(FastaFile fastaFile) {
-        for (FastaRecord record: fastaFile.getFastaRecords()) {
-            analyseSequence(record.getChain().substring(startPosition, startPosition + sequenceLength));
+    protected void calculateAbsoluteFrequencies(MotifSet motifSet) {
+        for (String chain: ChainsGetter.getChains(motifSet)) {
+            analyseSequence(chain);
             numberOfSequences++;
         }
     }

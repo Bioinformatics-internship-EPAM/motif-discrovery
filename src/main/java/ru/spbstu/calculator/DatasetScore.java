@@ -1,6 +1,7 @@
 package ru.spbstu.calculator;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 /**
@@ -8,22 +9,30 @@ import java.util.List;
  */
 public class DatasetScore {
 
-    private List<Motif> data = new ArrayList<>();
+    private List<ScoredMotif> data = new ArrayList<>();
     private final int windowSize;
 
     public DatasetScore(int windowSize) {
         this.windowSize = windowSize;
     }
 
-    public void addAll(List<Motif> motifs) {
+    public void addAll(List<ScoredMotif> motifs) {
         data.addAll(motifs);
+    }
+
+    public void addAnother(DatasetScore ds) {
+        data.addAll(ds.getData());
     }
 
     public int getWindowSize(){
         return windowSize;
     }
 
-    public List<Motif> getData() {
+    public List<ScoredMotif> getData() {
         return data;
+    }
+
+    public ScoredMotif getMax() {
+        return data.stream().max(ScoredMotif::compareTo).get();
     }
 }
