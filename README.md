@@ -22,7 +22,8 @@ Run `./gradlew build`
 
 How to run
 ==========
-Run `./gradlew run`
+Before run put your fasta records in src/main/resources/PWMSample.
+After that run `./gradlew run`
 
 Authors:
 - Maksim Solomonov
