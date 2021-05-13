@@ -33,14 +33,12 @@ public class GibbsMotifRecognizer implements MotifRecognizer {
         }
 
         // recount matrix cause relative format is more human-readable
-        pwCalculator = new PWCalculator(new CalculationStrategy
-                .Builder(Constants.DEFAULT_WINDOW_SIZE).calculationType(Constants.calculationMethod.RELATIVE).build());
+        pwCalculator = new PWCalculator(CalculationStrategy.builder().resultFrequency(Constants.calculationMethod.RELATIVE).build());
         return pwCalculator.calculateMatrix(motifSet);
     }
 
     public void init(FastaFile fastaFile) {
-        pwCalculator = new PWCalculator(new CalculationStrategy
-                .Builder(Constants.DEFAULT_WINDOW_SIZE).build());
+        pwCalculator = new PWCalculator(CalculationStrategy.builder().build());
         motifSet = new MotifSet(fastaFile, MotifSet.Policy.RANDOM, Constants.DEFAULT_WINDOW_SIZE);
         matrix = pwCalculator.calculateMatrix(motifSet);
 

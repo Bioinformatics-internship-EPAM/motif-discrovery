@@ -5,8 +5,14 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 
 import ru.spbstu.fastafile.FastaFile;
+import ru.spbstu.fastafile.FastaFileParser;
+import ru.spbstu.fastafile.FastaRecord;
+import ru.spbstu.fastafile.Parser;
+import ru.spbstu.reader.DefaultReader;
+import ru.spbstu.reader.Reader;
 
 import java.io.IOException;
+import java.util.List;
 
 public class SimilarityScoreCalculatorTest {
 
@@ -18,17 +24,15 @@ public class SimilarityScoreCalculatorTest {
     private DatasetScore ds;
 
     @Before
-    public void setup() throws IOException {
-        FastaFile fastaFile = new FastaFile();
-        fastaFile.readFastaFile(fastaCalculate);
+    public void setup() throws Exception {
+        Parser fastaFileParser = new FastaFileParser();
+        Reader defaultReader = new DefaultReader(fastaCalculate);
+        List<FastaRecord> fastaRecords = fastaFileParser.parseData(defaultReader.readData());
+        FastaFile fastaFile = new FastaFile(fastaRecords);
 
-        FastaFile fastaFilePW = new FastaFile();
-        fastaFilePW.readFastaFile(fastaPW);
-        PWCalculator pwCalculator = new PWCalculator();
-        PWMatrix matrix = pwCalculator.calculateMatrix(fastaFilePW, CalculationStrategy.builder()
-                .sequenceLength(sequenceLength)
-                .resultFrequency(Constants.calculationMethod.RELATIVE)
-                .build());
+        PWCalculator pwCalculator = new PWCalculator(CalculationStrategy.builder().sequenceLength(sequenceLength).resultFrequency(Constants.calculationMethod.RELATIVE).build());
+        MotifSet motifSet = new MotifSet(fastaFile, MotifSet.Policy.FIRST, sequenceLength);
+        PWMatrix matrix = pwCalculator.calculateMatrix(motifSet);
 
         SimilarityScoreCalculator ssc = new SimilarityScoreCalculator(sequenceLength, fastaFile);
         ds = ssc.calculateScore(matrix);
@@ -56,7 +60,7 @@ public class SimilarityScoreCalculatorTest {
 
     @Test
     public void testElem0Score() {
-        assertEquals(2.5D, ds.getData().get(0).getScore(), delta);
+        assertEquals(6.0D, ds.getData().get(0).getScore(), delta);
     }
 
     @Test
@@ -71,7 +75,7 @@ public class SimilarityScoreCalculatorTest {
 
     @Test
     public void testElem1Score() {
-        assertEquals(2.6D, ds.getData().get(1).getScore(), delta);
+        assertEquals(6.0D, ds.getData().get(1).getScore(), delta);
     }
 
     @Test
@@ -86,6 +90,6 @@ public class SimilarityScoreCalculatorTest {
 
     @Test
     public void testElem2Score() {
-        assertEquals(2.6D, ds.getData().get(2).getScore(), delta);
+        assertEquals(6.0D, ds.getData().get(2).getScore(), delta);
     }
 }

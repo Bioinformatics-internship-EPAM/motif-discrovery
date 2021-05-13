@@ -28,11 +28,11 @@ public class Main {
         Parser fastaFileParser = new FastaFileParser();
         List<FastaRecord> fastaRecords = fastaFileParser.parseData(data);
         FastaFile fastaFile = new FastaFile(fastaRecords);
-        PWCalculator pwCalculator = new PWCalculator(new CalculationStrategy
-                .Builder(Constants.DEFAULT_WINDOW_SIZE).build());
+
+        PWCalculator pwCalculator = new PWCalculator(CalculationStrategy.builder().build());
         MotifSet motifSet = new MotifSet(fastaFile, MotifSet.Policy.FIRST, Constants.DEFAULT_WINDOW_SIZE);
         PWMatrix matrix = pwCalculator.calculateMatrix(motifSet);
-        SimilarityScoreCalculator smCalculator = new SimilarityScoreCalculator(Constants.DEFAULT_WINDOW_SIZE, fastaFile);
+        SimilarityScoreCalculator smCalculator = new SimilarityScoreCalculator(fastaFile);
         DatasetScore resultScore = smCalculator.calculateScore(matrix);
         System.out.println(matrix);
         MotifReporter.reportTopResults(resultScore, System.out, TOP_COUNT);

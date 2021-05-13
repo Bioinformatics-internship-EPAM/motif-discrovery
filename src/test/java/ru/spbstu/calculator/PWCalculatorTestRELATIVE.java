@@ -4,9 +4,15 @@ import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;
 import java.io.IOException;
+import java.util.List;
 
 import ru.spbstu.fastafile.FastaFile;
 import ru.spbstu.calculator.Constants.calculationMethod;
+import ru.spbstu.fastafile.FastaFileParser;
+import ru.spbstu.fastafile.FastaRecord;
+import ru.spbstu.fastafile.Parser;
+import ru.spbstu.reader.DefaultReader;
+import ru.spbstu.reader.Reader;
 
 public class PWCalculatorTestRELATIVE {
     private final String fileName = "src/test/resources/PWTest";
@@ -16,15 +22,15 @@ public class PWCalculatorTestRELATIVE {
     private PWMatrix matrix;
 
     @Before
-    public void setup() throws IOException {
-        FastaFile fastaFile = new FastaFile();
-        fastaFile.readFastaFile(fileName);
+    public void setup() throws Exception {
+        Parser fastaFileParser = new FastaFileParser();
+        Reader defaultReader = new DefaultReader(fileName);
+        List<FastaRecord> fastaRecords = fastaFileParser.parseData(defaultReader.readData());
+        FastaFile fastaFile = new FastaFile(fastaRecords);
 
-        PWCalculator pwCalculator = new PWCalculator();
-        matrix = pwCalculator.calculateMatrix(fastaFile, CalculationStrategy.builder()
-                .sequenceLength(sequenceLength)
-                .resultFrequency(calculationMethod.RELATIVE)
-                .build());
+        PWCalculator pwCalculator = new PWCalculator(CalculationStrategy.builder().sequenceLength(sequenceLength).resultFrequency(calculationMethod.RELATIVE).build());
+        MotifSet motifSet = new MotifSet(fastaFile, MotifSet.Policy.FIRST, sequenceLength);
+        matrix = pwCalculator.calculateMatrix(motifSet);
     }
 
     @Test
