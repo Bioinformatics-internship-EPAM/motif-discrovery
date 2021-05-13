@@ -27,9 +27,13 @@ public class GibbsMotifRecognizer implements MotifRecognizer {
         double delta = Double.POSITIVE_INFINITY;
         int i = 0;
 
-        while ((delta > desiredDelta) || Double.isInfinite(delta) || i < maxIterations) {
+        while ((delta > desiredDelta) || Double.isInfinite(delta)) {
             delta = countIteration();
             i++;
+
+            System.out.println("STEP: " + (new Integer(i)).toString());
+            System.out.println(matrix.toString());
+            System.out.println("DELTA: " + (new Double(delta)).toString());
         }
 
         // recount matrix cause relative format is more human-readable
