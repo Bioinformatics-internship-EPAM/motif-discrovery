@@ -14,7 +14,7 @@ import ru.spbstu.reader.Reader;
 import java.io.IOException;
 import java.util.List;
 
-public class SimilarityScoreCalculatorTest {
+public class SimilarityScoreCalculatorTestInfinity {
 
     private final String fastaPW = "src/test/resources/PWTest";
     private final String fastaCalculate = "src/test/resources/calculator-test";
@@ -30,7 +30,7 @@ public class SimilarityScoreCalculatorTest {
         List<FastaRecord> fastaRecords = fastaFileParser.parseData(defaultReader.readData());
         FastaFile fastaFile = new FastaFile(fastaRecords);
 
-        PWCalculator pwCalculator = new PWCalculator(CalculationStrategy.builder().sequenceLength(sequenceLength).resultFrequency(Constants.calculationMethod.RELATIVE).build());
+        PWCalculator pwCalculator = new PWCalculator(CalculationStrategy.builder().sequenceLength(sequenceLength).build());
         MotifSet motifSet = new MotifSet(fastaFile, MotifSet.Policy.FIRST, sequenceLength);
         PWMatrix matrix = pwCalculator.calculateMatrix(motifSet);
 
@@ -60,7 +60,7 @@ public class SimilarityScoreCalculatorTest {
 
     @Test
     public void testElem0Score() {
-        assertEquals(6.0D, ds.getData().get(0).getScore(), delta);
+        assertEquals(8.317766166719343D, ds.getData().get(0).getScore(), delta);
     }
 
     @Test
@@ -75,7 +75,7 @@ public class SimilarityScoreCalculatorTest {
 
     @Test
     public void testElem1Score() {
-        assertEquals(6.0D, ds.getData().get(1).getScore(), delta);
+        assertEquals(8.317766166719343D, ds.getData().get(1).getScore(), delta);
     }
 
     @Test
@@ -90,6 +90,6 @@ public class SimilarityScoreCalculatorTest {
 
     @Test
     public void testElem2Score() {
-        assertEquals(6.0D, ds.getData().get(2).getScore(), delta);
+        assertEquals(8.317766166719343D, ds.getData().get(2).getScore(), delta);
     }
 }

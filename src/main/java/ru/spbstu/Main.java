@@ -19,6 +19,7 @@ import java.util.List;
 public class Main {
 
     private static final int TOP_COUNT = 5;
+    private static final String FASTA_FILENAME = "src/main/resources/PWMSample";
 
     public static void main(String[] args) throws Exception {
         // Execute one iteration
@@ -27,11 +28,11 @@ public class Main {
         Parser fastaFileParser = new FastaFileParser();
         List<FastaRecord> fastaRecords = fastaFileParser.parseData(data);
         FastaFile fastaFile = new FastaFile(fastaRecords);
-        PWCalculator pwCalculator = new PWCalculator(new CalculationStrategy
-                .Builder(Constants.DEFAULT_WINDOW_SIZE).build());
+
+        PWCalculator pwCalculator = new PWCalculator(CalculationStrategy.builder().build());
         MotifSet motifSet = new MotifSet(fastaFile, MotifSet.Policy.FIRST, Constants.DEFAULT_WINDOW_SIZE);
         PWMatrix matrix = pwCalculator.calculateMatrix(motifSet);
-        SimilarityScoreCalculator smCalculator = new SimilarityScoreCalculator(Constants.DEFAULT_WINDOW_SIZE, fastaFile);
+        SimilarityScoreCalculator smCalculator = new SimilarityScoreCalculator(fastaFile);
         DatasetScore resultScore = smCalculator.calculateScore(matrix);
         System.out.println(matrix);
         MotifReporter.reportTopResults(resultScore, System.out, TOP_COUNT);
@@ -42,3 +43,4 @@ public class Main {
         System.out.println(recognizer.recognize(fastaFile));
     }
 }
+

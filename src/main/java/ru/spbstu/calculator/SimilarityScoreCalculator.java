@@ -24,6 +24,11 @@ public class SimilarityScoreCalculator {
         this.dataset = dataset;
     }
 
+    public SimilarityScoreCalculator(FastaFile dataset) {
+        this.windowSize = Constants.DEFAULT_WINDOW_SIZE;
+        this.dataset = dataset;
+    }
+
     /**
      * Count score for each window right to left
      * Example:

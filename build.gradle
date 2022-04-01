@@ -9,6 +9,7 @@
 plugins {
     // Apply the application plugin to add support for building a CLI application in Java.
     id 'application'
+    id "io.freefair.lombok" version "6.0.0-m2"
 }
 
 group 'ru.spbstu'
@@ -30,12 +31,4 @@ dependencies {
 application {
     // Define the main class for the application.
     mainClass = 'ru.spbstu.Main'
-}
-
-sourceSets {
-    test {
-        java {
-            exclude 'ru/*'
-        }
-    }
 }
